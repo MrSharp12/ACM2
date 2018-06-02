@@ -28,8 +28,8 @@ namespace ACM2.BL
 
             //foundCustomer = query.First();
 
-            //foundCustomer = customerList.FirstOrDefault(c => 
-            //c.CustomerId == customerId);single line lambda
+            foundCustomer = customerList.FirstOrDefault(c =>
+            c.CustomerId == customerId);// single line lambda
 
             //foundCustomer = customerList.FirstOrDefault(c =>
             //                {
@@ -37,10 +37,10 @@ namespace ACM2.BL
             //                    return c.CustomerId == customerId;
             //                });//multi line lambda
 
-            foundCustomer = customerList.Where(c =>
-                                  c.CustomerId == customerId)
-                                  .Skip(1)
-                                  .FirstOrDefault();
+            //foundCustomer = customerList.Where(c =>
+            //                      c.CustomerId == customerId)
+            //                      .Skip(1)
+            //                      .FirstOrDefault();
 
             return foundCustomer;
         }
@@ -74,6 +74,31 @@ namespace ACM2.BL
                   CustomerTypeId = 2}
             };
             return custList;
+        }
+
+        public IEnumerable<Customer> RetrieveEmptyList()
+        {
+            return Enumerable.Repeat(new Customer(), 5);
+        }
+
+        public IEnumerable<Customer> SortByName (List<Customer> customerList)
+        {
+            return customerList.OrderBy(c => c.LastName)
+                            .ThenBy(c => c.FirstName);
+        }
+
+        public IEnumerable<Customer> SortByNameInReverse (List<Customer> customerList)
+        {
+            //return customerList.OrderByDescending(c => c.LastName)
+            //                .ThenByDescending(c => c.FirstName);
+
+            return SortByName(customerList).Reverse();
+        }
+
+        public IEnumerable<Customer> SortByType (List<Customer> customerList)
+        {
+            return customerList.OrderByDescending(c => c.CustomerTypeId.HasValue)
+                                .ThenBy(c => c.CustomerTypeId);
         }
     }
 }
