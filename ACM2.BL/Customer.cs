@@ -14,5 +14,7 @@ namespace ACM2.BL
         public int? CustomerTypeId { get; set; }
         public string EmailAddess { get; set; }
 
+        public List<Invoice> InvoiceList { get; set; }
+
     }
 }

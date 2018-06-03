@@ -45,33 +45,68 @@ namespace ACM2.BL
             return foundCustomer;
         }
 
+        public IEnumerable<string> GetNames(List<Customer> customerList)
+        {
+            var query = customerList.Select(c => c.LastName + ", " + c.FirstName);
+            return query;
+        }
+
+        public dynamic GetNamesAndEmail(List<Customer> customerList)
+        {
+            var query = customerList.Select(c => new
+                            {
+                                Name = c.LastName + c.FirstName,
+                                c.EmailAddess
+                            });
+            foreach (var item in query)
+            {
+                Console.WriteLine(item.Name + ":" + item.EmailAddess);
+            }
+            return query;
+        }//recommended use of anonymous types = add this code where you need it  
+        //for example, put this code in the UI layer, and bind directly to the results of the query
+
+        //public IEnumerable<Customer> GetOverdueCustomers(List<Customer> customerList)
+        //{
+        //    var query = customerList
+        //                    .Select(c => c.InvoiceList
+        //                                  .Where(i => (IsPaid ?? false) == false));
+        //}
+
         public List<Customer> Retrieve()
         {
+
+            InvoiceRepository invoiceRepository = new InvoiceRepository();
+
             List<Customer> custList = new List<Customer>
             {new Customer()
                 { CustomerId = 1,
                   FirstName = "Frodo",
                   LastName = "Baggins",
                   EmailAddess = "fb@hob.me",
-                  CustomerTypeId = 1},
+                  CustomerTypeId = 1,
+                  InvoiceList = invoiceRepository.Retrieve(1)},
              new Customer()
                 { CustomerId = 2,
                   FirstName = "Bilbo",
                   LastName = "Baggins",
                   EmailAddess = "bb@hob.me",
-                  CustomerTypeId = null},
+                  CustomerTypeId = null,
+                  InvoiceList = invoiceRepository.Retrieve(2)},
              new Customer()
                 { CustomerId = 3,
                   FirstName = "Samwise",
                   LastName = "Gamgee",
                   EmailAddess = "sg@hob.me",
-                  CustomerTypeId = 1},
+                  CustomerTypeId = 1,
+                  InvoiceList = invoiceRepository.Retrieve(3)},
              new Customer()
                 { CustomerId = 4,
                   FirstName = "Rosie",
                   LastName = "Cotton",
                   EmailAddess = "rc@hob.com",
-                  CustomerTypeId = 2}
+                  CustomerTypeId = 2,
+                  InvoiceList = invoiceRepository.Retrieve(4)}
             };
             return custList;
         }
